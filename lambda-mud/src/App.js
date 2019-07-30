@@ -23,10 +23,10 @@ class App extends Component {
         errors: [],
         messages: [],
         name: null,
-        encumbrance: 0,  // How much are you carrying?
-        strength: 0,  // How much can you carry?
-        speed: 0,  // How fast do you travel?
-        gold: 0,
+        encumbrance: null,  // How much are you carrying?
+        strength: null,  // How much can you carry?
+        speed: null,  // How fast do you travel?
+        gold: null,
         inventory: [],
         status: [],
 
@@ -47,7 +47,7 @@ componentDidMount() {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/')
       .then(res => {
           console.log((res));
-          this.setState({ name: res.data.name })
+          this.setState({ name: res.data.name, gold: res.data.gold, encumbrance: res.data.encumbrance })
       })
       .catch(err => console.log(err))
 }
@@ -59,7 +59,7 @@ moveNorth = () => {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', direction)
       .then(res => {
         console.log((res));
-        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items})
+        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items })
     })
       .catch(err => console.log(err))
   }
@@ -70,10 +70,10 @@ moveSouth = () => {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', direction)
       .then(res => {
         console.log((res));
-        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items})
-    })
-      .catch(err => console.log(err))
-  }
+        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items })
+      })
+        .catch(err => console.log(err))
+    }
 
 moveEast = () => {
   const direction = {"direction":"e"}
@@ -81,7 +81,7 @@ moveEast = () => {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', direction)
       .then(res => {
         console.log((res));
-        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items})
+        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items })
     })
       .catch(err => console.log(err))
   }
@@ -92,10 +92,10 @@ moveWest = () => {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', direction)
       .then(res => {
         console.log((res));
-        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items})
-    })
-      .catch(err => console.log(err))
-  }
+        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items })
+      })
+        .catch(err => console.log(err))
+    }
 
 pickUpTreasure = () => {
   const take = { "name" : "treasure"}
@@ -103,7 +103,18 @@ pickUpTreasure = () => {
   .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/take/', take)
   .then(res => {
     console.log((res));
-    this.setState({ gold: res.data.gold })
+    this.setState({ encumbrance: res.data.encumbrance})
+})
+  .catch(err => console.log(err))
+}
+
+dropTreasure = () => {
+  const drop = { "name" : "treasure"}
+  AxiosWithAuth()
+  .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/drop/', drop)
+  .then(res => {
+    console.log((res));
+    this.setState({ encumbrance: res.data.encumbrance, items: res.data.items})
 })
   .catch(err => console.log(err))
 }
@@ -126,6 +137,7 @@ pickUpTreasure = () => {
           moveEast = {this.moveEast}
           moveWest = {this.moveWest}
           take = {this.pickUpTreasure}
+          drop = {this.dropTreasure}
         
         />
         <Player 
