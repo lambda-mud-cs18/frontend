@@ -108,6 +108,17 @@ pickUpTreasure = () => {
   .catch(err => console.log(err))
 }
 
+dropTreasure = () => {
+  const drop = { "name" : "treasure"}
+  AxiosWithAuth()
+  .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/drop/', drop)
+  .then(res => {
+    console.log((res));
+    this.setState({ encumbrance: res.data.encumbrance, items: res.data.items})
+})
+  .catch(err => console.log(err))
+}
+
   render() {
 
     return (
@@ -126,6 +137,7 @@ pickUpTreasure = () => {
           moveEast = {this.moveEast}
           moveWest = {this.moveWest}
           take = {this.pickUpTreasure}
+          drop = {this.dropTreasure}
         
         />
         <Player 
