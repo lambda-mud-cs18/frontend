@@ -29,6 +29,8 @@ class App extends Component {
         gold: null,
         inventory: [],
         status: [],
+        graph: {},
+        allLinks: [],
 
     }
 }
@@ -119,10 +121,23 @@ dropTreasure = () => {
   .catch(err => console.log(err))
 }
 
+mapLinks = () => {
+  const { graph } = this.state;
+  const setLinks = [];
+  for (let room in graph) {
+    for (let linkedRoom in graph[room][1]) {
+      setLinks.push([graph[room][0], graph[graph[room][1][linkedRoom]][0]]);
+    }
+  }
+  this.setState({ allLinks: setLinks });
+};
+
   render() {
 
     return (
       <div className="App">
+
+        <div>
         <Room 
           room_id = {this.state.room_id}
           title = {this.state.title}
@@ -131,6 +146,14 @@ dropTreasure = () => {
           items = {this.state.items}
           players = {this.state.players}
         />
+        <Player 
+          name = {this.state.name}
+          gold = {this.state.gold}
+          encumbrance = {this.state.encumbrance}
+        
+        />
+        </div>
+        
         <Buttons 
           moveNorth = {this.moveNorth}
           moveSouth = {this.moveSouth}
@@ -140,15 +163,11 @@ dropTreasure = () => {
           drop = {this.dropTreasure}
         
         />
-        <Player 
-          name = {this.state.name}
-          gold = {this.state.gold}
-          encumbrance = {this.state.encumbrance}
-        
-        />
       </div>
     );
   }
 }
+
+
 
 export default App;
