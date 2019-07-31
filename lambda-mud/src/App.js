@@ -7,15 +7,16 @@ import Room from './components/Room.js'
 import Player from './components/Player.js'
 import AxiosWithAuth from './components/AxiosWithAuth.js'
 import Buttons from './components/Buttons.js'
+import TreasureMap from './components/TreasureMap.js'
+import styled, { keyframes } from 'styled-components';
+import data from './data/data.json'
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
+ state = {
         room_id: null,
-        title: null,
+        title: '',
         description: null,
-        coordinates: "?",
+        coords: { x:60, y:60 },
         players:[],
         items: [],
         exits: [],
@@ -31,9 +32,11 @@ class App extends Component {
         status: [],
         graph: {},
         allLinks: [],
+        allCoords: [],
+        graphLoaded: false
 
     }
-}
+
 
 componentDidMount() {
 
@@ -52,8 +55,8 @@ componentDidMount() {
           this.setState({ name: res.data.name, gold: res.data.gold, encumbrance: res.data.encumbrance })
       })
       .catch(err => console.log(err))
-}
-
+    }
+    
   
 moveNorth = () => {
   const direction = {"direction":"n"}
@@ -121,23 +124,17 @@ dropTreasure = () => {
   .catch(err => console.log(err))
 }
 
-mapLinks = () => {
-  const { graph } = this.state;
-  const setLinks = [];
-  for (let room in graph) {
-    for (let linkedRoom in graph[room][1]) {
-      setLinks.push([graph[room][0], graph[graph[room][1][linkedRoom]][0]]);
-    }
-  }
-  this.setState({ allLinks: setLinks });
-};
-
   render() {
 
     return (
       <div className="App">
-
+        
         <div>
+
+        <TreasureMap 
+    
+        
+        />
         <Room 
           room_id = {this.state.room_id}
           title = {this.state.title}
@@ -167,7 +164,6 @@ mapLinks = () => {
     );
   }
 }
-
 
 
 export default App;
