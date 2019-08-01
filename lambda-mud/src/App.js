@@ -148,11 +148,8 @@ class App extends Component {
       <div className="App">
 
         <div>
-
-          {/* <TreasureMap
-
-
-          /> */}
+          <TreasureMap
+          />
           <Room
             room_id={this.state.room_id}
             title={this.state.title}
