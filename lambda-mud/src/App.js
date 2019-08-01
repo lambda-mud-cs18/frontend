@@ -132,8 +132,7 @@ dropTreasure = () => {
         <div>
 
         <TreasureMap 
-    
-        
+
         />
         <Room 
           room_id = {this.state.room_id}
