@@ -37,7 +37,7 @@ class App extends Component {
       allLinks: [],
       allCoords: [],
       graphLoaded: false,
-      playerToken: "Token e25a39329d64685c578fd5556b20b30949e391df"
+      playerToken: ""
 
     }
   }
