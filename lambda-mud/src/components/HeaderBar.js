@@ -6,7 +6,7 @@ const HeaderBar = () => {
     <StyledHeader>
       <div className="container">
         <h1>Lambda Treasure Hunt</h1>
-        <h4>Enter at your own risk</h4>
+        <h4>(Enter at your own risk)</h4>
       </div>
     </StyledHeader>
   );
@@ -26,11 +26,16 @@ const StyledHeader = styled.header`
   }
 
   h1 {
-    margin-right: auto;
-    margin-left: auto;
+    margin: 0 auto;
     font-size: 2rem;
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 500;
+    font-style: italic
+  }
+
+  h4 {
+    font-size: 1.3rem;
+    font-style: oblique;
   }
 `
 
