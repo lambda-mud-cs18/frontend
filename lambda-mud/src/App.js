@@ -56,7 +56,7 @@ class App extends Component {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/')
       .then(res => {
         console.log((res));
-        this.setState({ name: res.data.name, gold: res.data.gold, encumbrance: res.data.encumbrance })
+        this.setState({ name: res.data.name, gold: res.data.gold, encumbrance: res.data.encumbrance, strength: res.data.strength })
       })
       .catch(err => console.log(err))
   }
