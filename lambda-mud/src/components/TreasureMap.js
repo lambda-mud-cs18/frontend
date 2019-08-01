@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { FlexibleXYPlot, LineSeries, MarkSeries } from 'react-vis';
 import styled, { keyframes } from 'styled-components';
-import Buttons from './Buttons'
 
 export default class TreasureMap extends Component {
-    state = { value: null };
+  state = { value: null };
   render() {
     const myData = [
       { x: 60, y: 60 },
@@ -508,18 +507,13 @@ export default class TreasureMap extends Component {
       { x: 73, y: 56 },
       { x: 51, y: 67 },
     ]
-  
-
-
-
-
 
     const { value } = this.state;
     const { coords, graph, links, travelToNode } = this.props;
     return (
-      <StyledMap style={{ display:'flex', flexDirection: 'row'}}>
-        {/* {value ? <StyledIdPopup>{value}</StyledIdPopup> : null} */}
-        <FlexibleXYPlot height={300} width= {300}>
+      <StyledMap style={{ display: 'flex', flexDirection: 'row' }}>
+        {value ? <StyledIdPopup>{value}</StyledIdPopup> : null}
+        <FlexibleXYPlot height={300} width={300}>
           {/* {links.map(link => (
             <LineSeries
               strokeWidth="3"
@@ -532,8 +526,8 @@ export default class TreasureMap extends Component {
             className="mark-series-example"
             strokeWidth={2}
             opacity="1"
-            size="4"
-            colorType="literal"
+            size="3"
+            color="#cd3b54"
             data={myData}
           //   style={{ cursor: 'pointer', transition: 'all .2s' }}
           //   // Get the id and travels to that node onClick
@@ -564,7 +558,6 @@ export default class TreasureMap extends Component {
           //   }}
           />
         </FlexibleXYPlot>
-        <Buttons />
       </StyledMap>
     );
   }
@@ -576,25 +569,13 @@ This component renders the map. It uses the react-vis library by Uber to print o
 */
 
 
-  
-
-const fadeIn = keyframes`
-   from {
-     opacity: 0
-   }
-   to {
-     opacity: 1
-   }
- `;
 
 const StyledMap = styled.div`
   margin: auto;
   width: 75%;
-  height: 100%;
   flex: 1;
   padding: 3rem 4rem 2rem 3rem;
   position: relative;
-  animation: ${fadeIn} 2s ease-in-out 0.6;
 `;
 
 const StyledIdPopup = styled.div`

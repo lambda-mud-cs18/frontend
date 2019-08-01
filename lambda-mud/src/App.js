@@ -3,6 +3,7 @@ import './App.css';
 import axios from 'axios'
 import '../node_modules/react-vis/dist/style.css';
 import { FlexibleXYPlot, LineSeries, MarkSeries } from 'react-vis';
+import HeaderBar from './components/HeaderBar';
 import Room from './components/Room.js'
 import Player from './components/Player.js'
 import AxiosWithAuth from './components/AxiosWithAuth.js'
@@ -18,7 +19,7 @@ class App extends Component {
       room_id: null,
       title: '',
       description: null,
-      coords: { x: 60, y: 60 },
+      coords: [],
       players: [],
       items: [],
       exits: [],
@@ -82,7 +83,7 @@ class App extends Component {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', direction)
       .then(res => {
         console.log((res));
-        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items, coordinates: res.data.coordinates })
+        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items, coords: res.data.coordinates, players: res.data.players, cooldown: res.data.cooldown })
       })
       .catch(err => console.log(err))
   }
@@ -93,7 +94,7 @@ class App extends Component {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', direction)
       .then(res => {
         console.log((res));
-        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items, coordinates: res.data.coordinates })
+        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items, coords: res.data.coordinates, players: res.data.players, cooldown: res.data.cooldown })
       })
       .catch(err => console.log(err))
   }
@@ -104,7 +105,7 @@ class App extends Component {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', direction)
       .then(res => {
         console.log((res));
-        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items, coordinates: res.data.coordinates })
+        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items, coords: res.data.coordinates, players: res.data.players, cooldown: res.data.cooldown })
       })
       .catch(err => console.log(err))
   }
@@ -115,7 +116,7 @@ class App extends Component {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/move/', direction)
       .then(res => {
         console.log((res));
-        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items, coordinates: res.data.coordinates })
+        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items, coords: res.data.coordinates, players: res.data.players, cooldown: res.data.cooldown })
       })
       .catch(err => console.log(err))
   }
@@ -126,7 +127,7 @@ class App extends Component {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/take/', take)
       .then(res => {
         console.log((res));
-        this.setState({ encumbrance: res.data.encumbrance })
+        this.setState({ encumbrance: res.data.encumbrance, items: res.data.items, inventory: res.data.inventory })
       })
       .catch(err => console.log(err))
   }
@@ -137,7 +138,18 @@ class App extends Component {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/drop/', drop)
       .then(res => {
         console.log((res));
-        this.setState({ encumbrance: res.data.encumbrance, items: res.data.items })
+        this.setState({ encumbrance: res.data.encumbrance, items: res.data.items, inventory: res.data.inventory })
+      })
+      .catch(err => console.log(err))
+  }
+
+  sellTreasure = () => {
+    const sell = { "name": "treasure" }
+    AxiosWithAuth()
+      .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/drop/', sell)
+      .then(res => {
+        console.log((res));
+        this.setState({ encumbrance: res.data.encumbrance, items: res.data.items, inventory: res.data.inventory })
       })
       .catch(err => console.log(err))
   }
@@ -146,39 +158,67 @@ class App extends Component {
 
     return (
       <div className="App">
-
-        <div>
+        <HeaderBar />
+        <StyledMainApp>
           <TreasureMap
-          />
-          <Room
-            room_id={this.state.room_id}
-            title={this.state.title}
-            description={this.state.description}
-            exits={this.state.exits}
-            items={this.state.items}
-            players={this.state.players}
           />
           <Player
             name={this.state.name}
             gold={this.state.gold}
             encumbrance={this.state.encumbrance}
-
+            strength={this.state.strength}
+            inventory={this.state.inventory}
+            cooldown={this.state.cooldown}
+            moveNorth={this.moveNorth}
+            moveSouth={this.moveSouth}
+            moveEast={this.moveEast}
+            moveWest={this.moveWest}
+            take={this.pickUpTreasure}
+            drop={this.dropTreasure}
           />
-        </div>
-
-        <Buttons
-          moveNorth={this.moveNorth}
-          moveSouth={this.moveSouth}
-          moveEast={this.moveEast}
-          moveWest={this.moveWest}
-          take={this.pickUpTreasure}
-          drop={this.dropTreasure}
-
-        />
+          <Room
+            room_id={this.state.room_id}
+            title={this.state.title}
+            description={this.state.description}
+            coords={this.state.coords}
+            exits={this.state.exits}
+            players={this.state.players}
+            items={this.state.items}
+            players={this.state.players}
+            moveNorth={this.moveNorth}
+            moveSouth={this.moveSouth}
+            moveEast={this.moveEast}
+            moveWest={this.moveWest}
+            take={this.pickUpTreasure}
+            drop={this.dropTreasure}
+            sell={this.sellTreasure}
+          />
+        </StyledMainApp>
       </div>
     );
   }
 }
+
+const StyledMainApp = styled.div`
+  display: flex;
+  margin: 0 auto
+  height: calc(100vh - 120px);
+  align-items: center;
+  ${'' /* justify-content: center; */}
+  flex-wrap: wrap;
+  ${'' /* flex-direction: column; */}
+  .log-container {
+    width: 289px;
+    margin-top: 2rem;
+    background: #f5f5f5;
+    border: 2px solid #7dcdbe;
+    border-radius: 10px;
+    padding: 1rem;
+    .log-label {
+      margin-right: 1rem;
+    }
+  }
+`
 
 
 export default App;
