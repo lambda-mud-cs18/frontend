@@ -21,8 +21,8 @@ export default class Player extends Component {
             <CardTitle style={{ fontWeight: 'bolder' }}>Cooldown: {this.props.cooldown} sec</CardTitle>
             <div className="directionalButtons" >
               <Button onClick={this.props.moveNorth}>N</Button>
-              <Button onClick={this.props.moveEast}>E</Button>
               <Button onClick={this.props.moveSouth}>S</Button>
+              <Button onClick={this.props.moveEast}>E</Button>
               <Button onClick={this.props.moveWest}>W</Button>
             </div>
             <div className="actionButtons">

@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
-import '../node_modules/react-vis/dist/style.css';
-import { FlexibleXYPlot, LineSeries, MarkSeries } from 'react-vis';
 import HeaderBar from './components/HeaderBar';
-import Room from './components/Room.js'
-import Player from './components/Player.js'
-import AxiosWithAuth from './components/AxiosWithAuth.js'
-import Buttons from './components/Buttons.js'
-import TreasureMap from './components/TreasureMap.js'
-import styled, { keyframes } from 'styled-components';
-import data from './data/data.json'
+import Room from './components/Room.js';
+import Player from './components/Player.js';
+import AxiosWithAuth from './components/AxiosWithAuth.js';
+import TreasureMap from './components/TreasureMap.js';
+import styled from 'styled-components';
+// import '../node_modules/react-vis/dist/style.css';
+// import { FlexibleXYPlot, LineSeries, MarkSeries } from 'react-vis';
+// import data from './data/data.json'
 
 class App extends Component {
   constructor() {
@@ -48,7 +47,7 @@ class App extends Component {
       .get('https://lambda-treasure-hunt.herokuapp.com/api/adv/init/')
       .then(res => {
         console.log((res));
-        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items, players: res.data.players })
+        this.setState({ room_id: res.data.room_id, title: res.data.title, description: res.data.description, exits: res.data.exits, items: res.data.items, players: res.data.players, coords: res.data.coordinates, cooldown: res.data.cooldown })
       })
       .catch(err => console.log(err))
 
@@ -56,7 +55,7 @@ class App extends Component {
       .post('https://lambda-treasure-hunt.herokuapp.com/api/adv/status/')
       .then(res => {
         console.log((res));
-        this.setState({ name: res.data.name, gold: res.data.gold, encumbrance: res.data.encumbrance })
+        this.setState({ name: res.data.name, gold: res.data.gold, encumbrance: res.data.encumbrance, strength: res.data.strength })
       })
       .catch(err => console.log(err))
   }
@@ -204,9 +203,7 @@ const StyledMainApp = styled.div`
   margin: 0 auto
   height: calc(100vh - 120px);
   align-items: center;
-  ${'' /* justify-content: center; */}
   flex-wrap: wrap;
-  ${'' /* flex-direction: column; */}
   .log-container {
     width: 289px;
     margin-top: 2rem;
